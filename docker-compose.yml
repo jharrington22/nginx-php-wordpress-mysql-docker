@@ -1,0 +1,21 @@
+nginx:
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes_from: 
+    - php-fpm
+  links:
+    - php-fpm
+php-fpm:
+  build: ./php-fpm/
+  volumes: 
+    - ${WORDPRESS_DIR}:/var/www/wordpress
+  links:
+    - db
+db:
+  image: mysql
+  environment:
+    MYSQL_DATABASE: wordpress
+    MYSQL_ALLOW_EMPTY_PASSWORD: yes
+  ports:
+    - "3306:3306"
