@@ -1,6 +1,8 @@
 From alpine:3.2
 
-RUN apk add --update php-fpm php-mysql php
+RUN apk add --update php-fpm php-mysql php-gd php-curl php zlib zlib-dev
+
+RUN apk add --update php-zlib
 
 COPY php-fpm.conf /etc/php/
 
