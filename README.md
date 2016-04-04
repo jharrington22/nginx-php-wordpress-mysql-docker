@@ -3,16 +3,26 @@ nginx-php-wordpress-mysql-docker
 
 ## About
 
-Setup a local development environment for Wordpress using Nginx, PHP-FPM, Wordpress and MYSQL docker containers. 
+Setup a local development environment for Wordpress using Nginx, PHP-FPM and MYSQL docker containers. 
 
-This repository uses docker-compose to link everything together.
+A deploy script builds the both the nginx and php-fpm containers and links them together.
 
-The only required configuration is to set the environment variable `WORDPRESS_DIR` which will tell the php-fpm container where the core wordpress files are located on your local machine. 
+You should edit your code in the below "WORDPRESS_DIR" directory and then run the deploy script push it to docker. 
+
+There are only two required configuration elements to get this running for OSX and Windows. The first is setting the environment variable `WORDPRESS_DIR` which will tell the php-fpm container where the wordpress code is located and the other is the IP of the docker-machine.
+
+NOTE: If you are using Linux you don't need to add the IP of the docker-machine since this will be localhost. 
 
 eg. 
 
+Set wordpress source directory
 `export WORDPRESS_DIR=/Users/jharrington/wordpress`
 
+Set local shell ENV
+`eval "$(docker-machine env docker-vm)"`
+
+Set your host file to point to docker-machine
+`echo "$(docker-machine ip docker-vm) dockerhost" | sudo tee -a /etc/hosts`
 
 ## Wordpress
 
@@ -22,7 +32,7 @@ You will need to change the following in the wp-config.php:
 define('DB_NAME', 'wordpress');
 define('DB_USER', 'root');
 define('DB_PASSWORD', '');
-define('DB_HOST', "db:3306");
+define('DB_HOST', "dockerhost:3306");
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
